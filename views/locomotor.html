@@ -1,0 +1,75 @@
+<style>
+  * {
+    box-sizing: border-box;  
+  }
+
+  .session {
+    padding: 0 40px;
+  }
+
+  .session-name {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .contents {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .content-title {
+    text-align: center;
+  }
+
+  .card {
+    margin-top: 5px;
+    flex-wrap: wrap;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .game {
+    width: 18%;
+    height: 150px;
+    border: 1px solid;
+    margin: 0.5%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 10px;
+    font-weight: 800;
+    text-decoration: none;
+    color: white;
+    border: none;
+  }
+
+  .game:hover {
+    transform: scale(1.2);
+    transition: 0.4s;
+    z-index: 10;
+    position: relative;
+  }
+
+  .disabled {
+    opacity: 0.3;
+  }
+</style>
+<div ng-controller="gameCtrl" ng-repeat="session in bones">
+  <div class="session" ng-if="session.name == 'Aparelho locomotor'">
+    <h1 class="session-name">{{session.name}} </h1>
+
+    <div class="contents" ng-repeat="content in session.content">
+      <h2 class="content-title">{{content.name}}</h2>
+      <div class="card">
+        <a href="#!/bones/locomotor?opt=0" class="game disabled">Aleatório</a>
+        <a href="#!/bones/locomotor?opt=1" class="game disabled">Todos & Aleatório</a>
+        <!-- Não permitir abrir o link -->
+        <a href="#!/bones/locomotor?opt={{$index + 2}}" class="game" ng-class="c.views === true ? '' : 'disabled'" ng-repeat="c in content.bones">{{c.name}}</a>
+      </div>
+    </div>
+  </div>
+</div>

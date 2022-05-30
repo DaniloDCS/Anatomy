@@ -1,0 +1,229 @@
+<style>
+  .placar {
+    width: 100%;
+    height: 8%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(2, 2, 77);
+    color: white;
+  }
+
+  html,
+  body,
+  .container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .accident {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: 1%;
+    background-color: rgb(2, 2, 77);
+    color: white;
+  }
+
+  button {
+    padding: 14px 50px;
+    margin: 10px auto;
+    font-size: large;
+    border-radius: 50px;
+  }
+
+  .btn-start {
+    background-color: green;
+    color: white;
+    border: none;
+    filter: drop-shadow(0 0 4px #333);
+  }
+
+  .btn-restart {
+    background-color: red;
+    color: white;
+    border: none;
+    filter: drop-shadow(0 0 4px #333);
+  }
+
+  p {
+    margin: 0 10px;
+  }
+
+  #see {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+  }
+
+  #see div {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+  }
+
+  #see div p {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #timer {
+    max-width: 90%;
+    font-size: 25px;
+    background-color: white;
+    padding: 10px 30px;
+    color: rgb(2, 2, 77);
+    font-weight: 600;
+    border-radius: 50px;
+  }
+
+  i.fas.fa-check {
+    color: rgb(9, 221, 9);
+    margin-right: 5px;
+  }
+
+  i.fas.fa-times {
+    color: red;
+    margin-right: 5px;
+  }
+
+  .btn-turn {
+    background-color: white;
+    color: rgb(2, 2, 77);
+    padding: 16px 20px;
+    border-radius: 8px;
+  }
+
+  .btn-see {
+    color: white;
+    background-color: rgb(10, 123, 189);
+    border: none;
+  }
+
+  .btn-next {
+    color: black;
+    background-color: rgb(228, 231, 7);
+    border: none;
+  }
+
+  .accident-name {
+    display: inline-flex;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn-correct {
+    border-color: rgb(9, 221, 9);
+    font-weight: 600;
+    color: rgb(9, 221, 9);
+  }
+
+  .btn-correct:hover {
+    background-color: rgb(9, 221, 9);
+    color: white;
+  }
+
+  .btn-correct:hover i {
+    color: white;
+  }
+
+  .btn-incorrect {
+    border-color: red;
+    font-weight: 600;
+    color: red;
+  }
+
+  .btn-incorrect:hover {
+    background-color: red;
+    color: white;
+  }
+
+  .btn-incorrect:hover i {
+    color: white;
+  }
+
+  .game-icon {
+    width: 600px;
+    height: 500px;
+  }
+
+  .times i {
+    font-size: 40px;
+    font-weight: 600;
+    z-index: 8;  
+    color: red;
+  }
+
+  .deg-0 {
+    transform: rotate(0deg);
+  }
+
+  .deg-90 {
+    transform: rotate(90deg);
+  }
+
+  .deg-180 {
+    transform: rotate(180deg);
+  }
+
+  .deg-270 {
+    transform: rotate(270deg);
+  }
+
+  .img-img {
+    width: 700px;
+    height: 600px;
+    margin-bottom: 10px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<div ng-controller="boneCtrl" class="container">
+  <div class="placar">
+    <a class="btn-turn" href="/#!/locomotor"> <i class="fas fa-arrow-left"></i> </a>
+    <h1>{{bone.name}}</h1>
+    <p> <i class="fas fa-gamepad"></i> Plays: {{plays}}/{{accidents}}</p>
+    <p> <i class="fas fa-check"></i> Wins: {{wins}}</p>
+    <p> <i class="fas fa-times"></i> Losses: {{losses}}</p>
+  </div>
+  <div class="accident">
+    <div class="controls" ng-show="started">
+      <div class="img-img">
+        <img class="game-icon" src="{{bone.icon}}" ng-class="rotate" alt="">
+      </div>
+      <p id="timer"> <i class="fas fa-clock"></i> {{timer}}s <span class="accident-name">{{accident.name}}</span></p>
+      <button class="btn-see" ng-click="see()"> <i class="fas fa-eye"></i> Ver</button>
+      <button class="btn-next" ng-show="plays < accidents ? true : false" ng-click="next2()"> <i class="fas fa-arrow-right"></i> Próximo</button>
+      <button class="btn-restart" ng-click="restart()"> <i class="fas fa-redo"></i> Restart Game</button>
+    </div>
+    <button ng-show="!started" class="btn-start" ng-click="play()"> <i class="fas fa-gamepad"></i> Start Game</button>
+    <div id="see" ng-show="image">
+      <div>
+        <img width="900px" height="650px" src="{{accident.image}}" alt="">
+        <p id="timer"> <i class="fas fa-clock"></i> {{timer}}s <span class="accident-name">{{accident.name}}</span></p>
+        <p>
+          <button class="btn-correct" ng-click="win()"> <i class="fas fa-check"></i> Correto</button>
+          <button class="btn-incorrect" ng-click="lose()"> <i class="fas fa-times"></i> Incorreto</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
